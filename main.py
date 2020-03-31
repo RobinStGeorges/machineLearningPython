@@ -12,18 +12,18 @@ import csv
 
 
 x = np.arange(1, 301).reshape(300, 1)
-print("x")
+#print("x")
 #print(x)
 
 y = np.random.normal(x + 2, 50)
 
 col1 = np.ones((300), dtype=int).reshape(300, 1)
-print("les un")
+#print("les un")
 #print(col1)
 
 #x = np.concatenate((x, col1), axis=1)
 x = np.hstack((x, np.ones(x.shape)))
-print("concated")
+#print("concated")
 #print(x)
 
 
@@ -32,9 +32,13 @@ print("concated")
 def main():
     print("début du programme")
 
-    xFromCsv = readCSV("frut_price.csv")
+    fromCsv = readCSV("frut_price_without_header.csv")
     print("le csv")
-    print(xFromCsv)
+    print(fromCsv)
+
+    y = fromCsv[0:500, 0:1]
+    print("y")
+    print(y)
 
 
     matriceTrans = transverseMatrice(x)
@@ -64,9 +68,9 @@ def predictAge(w,x):
     return w.dot(x)
 
 def readCSV(filename):
-    reader = csv.reader(open(filename, "rb"), delimiter=",")
+    reader = csv.reader(open(filename, "r"), delimiter=",")
     x = list(reader)
-    result = np.array(x).astype("string")
+    result = np.array(x)
     return result
 
 
