@@ -11,18 +11,18 @@ import csv
 #matFrut = [[64236.62],[4046]]
 
 
-x = np.arange(1, 301).reshape(300, 1)
+#x = np.arange(1, 301).reshape(300, 1)
 #print("x")
 #print(x)
 
-y = np.random.normal(x + 2, 50)
+#y = np.random.normal(x + 2, 50)
 
-col1 = np.ones((300), dtype=int).reshape(300, 1)
+#col1 = np.ones((300), dtype=int).reshape(300, 1)
 #print("les un")
 #print(col1)
 
 #x = np.concatenate((x, col1), axis=1)
-x = np.hstack((x, np.ones(x.shape)))
+#x = np.hstack((x, np.ones(x.shape)))
 #print("concated")
 #print(x)
 
@@ -32,19 +32,29 @@ x = np.hstack((x, np.ones(x.shape)))
 def main():
     print("début du programme")
 
-    fromCsv = readCSV("frut_price_without_header.csv")
-    print("le csv")
-    print(fromCsv)
+    # x = readCSV("frut_price_without_header.csv").astype(float)
+    # print("le csv")
+    # print(x)
+    #
+    # lenght = x.shape[0]
+    # y = x[0:lenght, 0:1]
+    # print("y")
+    # print(y)
+    #
+    # x=np.delete(x,0,1)
+    # x = np.hstack((x, np.ones(x.shape)))
+    # print("x")
+    # print(x)
 
-    y = fromCsv[0:500, 0:1]
-    print("y")
+    x = csvToMatrixX()
+    y = csvToMatrixY()
+
     print(y)
 
-
-    matriceTrans = transverseMatrice(x)
-    print("transversed")
-    print(matriceTrans)
-    w = getW(x, matriceTrans)
+    # matriceTrans = transverseMatrice(x)
+    #print("transversed")
+    #print(matriceTrans)
+    # w = getW(x, matriceTrans)
     #print("w")
     #print(w)
     #age = predictAge(w, x)
@@ -73,6 +83,27 @@ def readCSV(filename):
     result = np.array(x)
     return result
 
+def csvToMatrix():
+    my_data = np.loadtxt("frut_price.csv", delimiter=',', skiprows=1)
+    Y = my_data[:,0]
+    X = my_data[:,1:]
+    col1 = np.full((len(Y), 1), 1)
+    X = np.append(X, col1, axis=1)
+    print(Y)
+    print(X)
+
+def csvToMatrixX():
+    my_data = np.loadtxt("frut_price.csv", delimiter=',', skiprows=1)
+    Y = my_data[:, 0]
+    X = my_data[:,1:]
+    col1 = np.full((len(Y), 1), 1)
+    X = np.append(X, col1, axis=1)
+    return X
+
+def csvToMatrixY():
+    my_data = np.loadtxt("frut_price.csv", delimiter=',', skiprows=1)
+    Y = my_data[:,0]
+    return Y
 
 
 
