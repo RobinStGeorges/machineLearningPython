@@ -56,6 +56,12 @@ def getW(x, xTrans):
 def predictAge(w,x):
     return w.dot(x)
 
+def readCSV(filename):
+    reader = csv.reader(open(filename, "rb"), delimiter=",")
+    x = list(reader)
+    result = np.array(x).astype("string")
+    return result
+
 
 
 
