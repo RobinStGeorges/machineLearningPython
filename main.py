@@ -7,23 +7,26 @@ import numpy.linalg as la
 #col1 = np.ones((size), dtype=int).reshape(size, 1)
 
 #matriceFrut
-matFrut = [[64236.62],[4046]]
+#matFrut = [[64236.62],[4046]]
 
 
 x = np.arange(1, 301).reshape(300, 1)
 print("x")
 #print(x)
 
+y = np.random.normal(x + 2, 50)
+
 col1 = np.ones((300), dtype=int).reshape(300, 1)
 print("les un")
 #print(col1)
 
-x = np.concatenate((x, col1), axis=1)
+#x = np.concatenate((x, col1), axis=1)
+x = np.hstack((x, np.ones(x.shape)))
 print("concated")
 print(x)
 
 
-y = np.random.normal(x + 2, 50)
+
 
 def main():
     print("début du programme")
@@ -33,7 +36,7 @@ def main():
     w = getW(x, matriceTrans)
     print("w")
     print(w)
-    #age = getAge(w, x)
+    #age = predictAge(w, x)
     #print (age)
 
 
@@ -50,7 +53,7 @@ def getW(x, xTrans):
     w = ((xTransXxInve.dot(xTrans)).dot(y))
     return w
 
-def getAge(w,x):
+def predictAge(w,x):
     return w.dot(x)
 
 
