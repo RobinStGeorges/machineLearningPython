@@ -1,5 +1,6 @@
 import numpy as np
 import numpy.linalg as la
+import csv
 
 
 #recup la taille des données
@@ -23,19 +24,25 @@ print("les un")
 #x = np.concatenate((x, col1), axis=1)
 x = np.hstack((x, np.ones(x.shape)))
 print("concated")
-print(x)
+#print(x)
 
 
 
 
 def main():
     print("début du programme")
+
+    xFromCsv = readCSV("frut_price.csv")
+    print("le csv")
+    print(xFromCsv)
+
+
     matriceTrans = transverseMatrice(x)
     print("transversed")
     print(matriceTrans)
     w = getW(x, matriceTrans)
-    print("w")
-    print(w)
+    #print("w")
+    #print(w)
     #age = predictAge(w, x)
     #print (age)
 
