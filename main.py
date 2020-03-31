@@ -5,7 +5,9 @@ x = np.arange(1, 301).reshape(300, 1)
 print(x)
 col1 = np.ones((300), dtype=int).reshape(300, 1)
 print(col1)
-x = np.c_[x , col1]
+x = np.concatenate((x, col1), axis=0)
+
+print(x)
 
 
 y = np.random.normal(x + 2, 50)
