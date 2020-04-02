@@ -32,8 +32,12 @@ def inverse_matrice(mat):
 def g(X, W):
     return np.dot(X, W)
 
-def sigmoid(n):
-    return (1 / (1 + exp(-n)))
+def sigmoid(arrayOfN):
+    i = 0
+    for n in arrayOfN:
+        arrayOfN[0] = (1 / (1 + exp(-n)))
+        i = i + 1
+    return arrayOfN
 
 def get_exact_w(X, trans_X, Y):
     trans_X_x_inv_X = inverse_matrice(trans_X.dot(X))
@@ -74,28 +78,16 @@ def get_aproximative_w_sigmoid():
     # Initialization
     global X, Y
     trans_X = transpose_matrix(X)
-    W = np.matrix('0.25676164 0.83605127')
-    trans_W = transpose_matrix(W)
-    alpha = 0.00000001
+    W = np.matrix('0.25676164; 0.83605127')
+    alpha = 0.0000001
     # looping
-    for i in range(0, 2001):
-        W = W - alpha * (((-2 / (i+1)) * trans_X * (Y - sigmoid(X.dot(trans_W)))))
+    for i in range(0, 1001):
+        W = W - alpha * (((1 / len(Y)) * trans_X.dot(sigmoid(g(X, W)) - Y)))
         # displaying every 10 iterations
         if i % 100 == 0:
+            print("*****sigmoid = " + str(sigmoid(g(X, W))))
             print("W" + str(i) + ": " + str(W))
     return W
-
-# def gradient_step(X, y, W):
-#     n = X.shape[0]
-#     W = W - alpha * (-2/n) * np.dot(X.t, y - g(X))
-#     return W
-
-# def gradient_descent(X, Y, alpha = 0.01, nb_iter = 1500):
-#     W_iter = np.random.uniform(-1, 1, (X.shape[1], 1))
-# 
-#     for i in range(nb_iter):
-#         print(W_iter)
-#         W_iter = gradient_step(W_iter)
 
 
 def predictAveragePrice(W, X):
@@ -121,10 +113,10 @@ def main():
     # Transposing X
     trans_X = transpose_matrix(X)
     # Getting app W
-    # approximative_W_sigmoid = get_aproximative_w_sigmoid()
-    # print("Approximative W (Sigmoid) = " + str(approximative_W_sigmoid))
-    approximative_W_rosenblatt = get_aproximative_w_rosenblatt()
-    print("Approximative W (Rosenblatt) = " + str(approximative_W_rosenblatt))
+    approximative_W_sigmoid = get_aproximative_w_sigmoid()
+    print("Approximative W (Sigmoid) = " + str(approximative_W_sigmoid))
+    # approximative_W_rosenblatt = get_aproximative_w_rosenblatt()
+    # print("Approximative W (Rosenblatt) = " + str(approximative_W_rosenblatt))
     # Getting app W
     # approximative_W = get_aproximative_w()
     # print("Approximative W = " + str(approximative_W))
