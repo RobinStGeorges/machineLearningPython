@@ -29,6 +29,9 @@ def inverse_matrice(mat):
     inv_mat = la.inv(mat)
     return inv_mat
 
+def g(X, W):
+    return np.dot(X, W)
+
 def sigmoid(n):
     return (1 / (1 + exp(-n)))
 
@@ -57,12 +60,11 @@ def get_aproximative_w_rosenblatt():
     # Initialization
     global X, Y
     trans_X = transpose_matrix(X)
-    W = np.matrix('0.25676164 0.83605127')
-    trans_W = transpose_matrix(W)
-    alpha = 0.00000001
+    W = np.matrix('0.25676164; 0.83605127')
+    alpha = 0.0000001
     # looping
-    for i in range(0, 2001):
-        W = W - alpha * (((-2 / (i+1)) * trans_X * (Y - X.dot(trans_W))))
+    for i in range(0, 1001):
+        W = W - alpha * (((-2 / len(Y)) * trans_X.dot(Y - g(X, W))))
         # displaying every 10 iterations
         if i % 100 == 0:
             print("W" + str(i) + ": " + str(W))
@@ -119,10 +121,10 @@ def main():
     # Transposing X
     trans_X = transpose_matrix(X)
     # Getting app W
-    approximative_W_sigmoid = get_aproximative_w_sigmoid()
-    print("Approximative W (Sigmoid) = " + str(approximative_W_sigmoid))
-    # approximative_W_rosenblatt = get_aproximative_w_rosenblatt()
-    # print("Approximative W (Rosenblatt) = " + str(approximative_W_rosenblatt))
+    # approximative_W_sigmoid = get_aproximative_w_sigmoid()
+    # print("Approximative W (Sigmoid) = " + str(approximative_W_sigmoid))
+    approximative_W_rosenblatt = get_aproximative_w_rosenblatt()
+    print("Approximative W (Rosenblatt) = " + str(approximative_W_rosenblatt))
     # Getting app W
     # approximative_W = get_aproximative_w()
     # print("Approximative W = " + str(approximative_W))
