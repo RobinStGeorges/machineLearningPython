@@ -1,7 +1,6 @@
 import numpy as np
 import numpy.linalg as la
 import random
-from math import exp
 
 X = None
 Y = None
@@ -35,7 +34,7 @@ def g(X, W):
 def sigmoid(arrayOfN):
     i = 0
     for n in arrayOfN:
-        arrayOfN[i] = (1 / (1 + exp(-n)))
+        arrayOfN[i] = (1 / (1 + np.exp(-n)))
         i = i + 1
     return arrayOfN
 
