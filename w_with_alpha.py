@@ -1,8 +1,6 @@
 import numpy as np
 import numpy.linalg as la
 import random
-from math import exp
-import math
 
 X = None
 Y = None
@@ -10,25 +8,9 @@ Y = None
 def initMatrix():
     global X, Y
     X = np.arange(1, 301).reshape(300, 1)
-
-    #old Y
-    #Y = np.random.normal(X + 2, 50)
-
-    d = (-2*X + 600)
-    Y = (X <= d).astype(np.float32())
+    Y = np.random.normal(X + 2, 50)
     col1 = np.full((len(Y), 1), 1)
     X = np.append(X, col1, axis=1)
-
-    #extension feature engeering
-    x = np.arange(1, 301).reshape(300, 1)
-    x2 = x ** 2
-    x3 = x * x2
-    x4 = x2 + x3
-    x = np.append(x,x2, axis=1)
-    x = np.append(x,x3, axis=1)
-    X = np.append(x, x4, axis=1)
-    Y = (-2 * X + 600 + x3 * x4)
-    print(Y)
 
 def csv_to_matrix(filename):
     global X, Y
@@ -71,6 +53,10 @@ def get_aproximative_w():
         # picking random line in the matrix
         random_line = random.randrange(0, (len(Y) - 1))
         W = W + (alpha * (Y[random_line] - W.dot(X[random_line])) * X[random_line])
+        # displaying every 10 iterations
+        if i % 10 == 0:
+            print(random_line)
+            print("W" + str(i) + ": " + str(W))
     return W
 
 def get_aproximative_w_rosenblatt():
@@ -82,6 +68,9 @@ def get_aproximative_w_rosenblatt():
     # looping
     for i in range(0, 1001):
         W = W - alpha * (((-2 / len(Y)) * trans_X.dot(Y - g(X, W))))
+        # displaying every 10 iterations
+        if i % 100 == 0:
+            print("W" + str(i) + ": " + str(W))
     return W
 
 def get_aproximative_w_sigmoid():
@@ -99,8 +88,8 @@ def get_aproximative_w_sigmoid():
     for i in range(1001):
         W = W - alpha * (((1 / len(Y)) * trans_X.dot(sigmoid(g(X, W)) - Y)))
         # displaying every 10 iterations
-        # if i % 100 == 0:
-        #    print("W" + str(i) + ": " + str(W))
+        if i % 100 == 0:
+            print("W" + str(i) + ": " + str(W))
     return W
 
 
@@ -118,29 +107,25 @@ def classification():
 
 def main():
     print("début du programme")
-
     # Fetching mat X and Y
     global X, Y
     # csv_to_matrix("frut_price.csv")
     initMatrix()
-
+    print(X)
+    print(Y)
     # Transposing X
     trans_X = transpose_matrix(X)
-
+    # Getting app W
     approximative_W_sigmoid = get_aproximative_w_sigmoid()
     print("Approximative W (Sigmoid) = " + str(approximative_W_sigmoid))
-
-
-    #Old calling
-
     # approximative_W_rosenblatt = get_aproximative_w_rosenblatt()
     # print("Approximative W (Rosenblatt) = " + str(approximative_W_rosenblatt))
     # Getting app W
     # approximative_W = get_aproximative_w()
     # print("Approximative W = " + str(approximative_W))
     # Getting exact W
-    # exact_W = get_exact_w(X, trans_X, Y)
-    # print("Exact W = " + str(exact_W))
+    exact_W = get_exact_w(X, trans_X, Y)
+    print("Exact W = " + str(exact_W))
     # Applying fouded Ws to a line in order to predict age
     # line = 5
     # print("Price in line " + str(line) + " = " + str(Y[line]))
