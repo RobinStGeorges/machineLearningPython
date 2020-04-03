@@ -87,17 +87,20 @@ def get_aproximative_w_rosenblatt():
 def get_aproximative_w_sigmoid():
     # Initialization
     global X, Y
-    print(X.shape)
+    Y = np.ones((300, 1), dtype=np.int16)
+    # Putting some 0 on Y
+    for i in range(141):
+        random_index = random.randrange(0, 100)
+        Y[random_index] = 0
     trans_X = transpose_matrix(X)
-    W = np.matrix('0.1 0.2 0.3 0.4')
-    alpha = 0.0000000001
+    W = np.matrix('0.1; 0.2')
+    alpha = 0.0000001
     # looping
-    for i in range(0, 2001):
-        W = W - alpha * (((1 / len(Y)) * trans_X.dot(sigmoid(g(X, transpose_matrix(W))) - Y)))
-        #print(sum(abs(np.round(sigmoid(g(X,W)))-Y)))
-    print("margin error & Y2")
-    print(sigmoid(g(X[2], W)))
-    print(Y[2])
+    for i in range(1001):
+        W = W - alpha * (((1 / len(Y)) * trans_X.dot(sigmoid(g(X, W)) - Y)))
+        # displaying every 10 iterations
+        # if i % 100 == 0:
+        #    print("W" + str(i) + ": " + str(W))
     return W
 
 
@@ -136,8 +139,8 @@ def main():
     # approximative_W = get_aproximative_w()
     # print("Approximative W = " + str(approximative_W))
     # Getting exact W
-    #exact_W = get_exact_w(X, trans_X, Y)
-    #print("Exact W = " + str(exact_W))
+    # exact_W = get_exact_w(X, trans_X, Y)
+    # print("Exact W = " + str(exact_W))
     # Applying fouded Ws to a line in order to predict age
     # line = 5
     # print("Price in line " + str(line) + " = " + str(Y[line]))
