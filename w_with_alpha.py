@@ -85,7 +85,6 @@ def get_aproximative_w_sigmoid():
         W = W - alpha * (((1 / len(Y)) * trans_X.dot(sigmoid(g(X, W)) - Y)))
         # displaying every 10 iterations
         if i % 100 == 0:
-            print("*****sigmoid = " + str(sigmoid(g(X, W))))
             print("W" + str(i) + ": " + str(W))
     return W
 
