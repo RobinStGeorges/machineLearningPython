@@ -35,7 +35,7 @@ def g(X, W):
 def sigmoid(arrayOfN):
     i = 0
     for n in arrayOfN:
-        arrayOfN[0] = (1 / (1 + exp(-n)))
+        arrayOfN[i] = (1 / (1 + exp(-n)))
         i = i + 1
     return arrayOfN
 
@@ -77,11 +77,16 @@ def get_aproximative_w_rosenblatt():
 def get_aproximative_w_sigmoid():
     # Initialization
     global X, Y
+    Y = np.ones((300, 1), dtype=np.int16)
+    # Putting some 0 on Y
+    for i in range(141):
+        random_index = random.randrange(0, 100)
+        Y[random_index] = 0
     trans_X = transpose_matrix(X)
-    W = np.matrix('0.25676164; 0.83605127')
+    W = np.matrix('0.1; 0.2')
     alpha = 0.0000001
     # looping
-    for i in range(0, 1001):
+    for i in range(1001):
         W = W - alpha * (((1 / len(Y)) * trans_X.dot(sigmoid(g(X, W)) - Y)))
         # displaying every 10 iterations
         if i % 100 == 0:
