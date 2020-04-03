@@ -10,11 +10,25 @@ Y = None
 def initMatrix():
     global X, Y
     X = np.arange(1, 301).reshape(300, 1)
+
+    #old Y
     #Y = np.random.normal(X + 2, 50)
+
     d = (-2*X + 600)
     Y = (X <= d).astype(np.float32())
     col1 = np.full((len(Y), 1), 1)
     X = np.append(X, col1, axis=1)
+
+    #extension feature engeering
+    x = np.arange(1, 301).reshape(300, 1)
+    x2 = x ** 2
+    x3 = x * x2
+    x4 = x2 + x3
+    x = np.append(x,x2, axis=1)
+    x = np.append(x,x3, axis=1)
+    X = np.append(x, x4, axis=1)
+    Y = (-2 * X + 600 + x3 * x4)
+    print(Y)
 
 def csv_to_matrix(filename):
     global X, Y
@@ -36,8 +50,10 @@ def g(X, W):
     return np.dot(X, W)
 
 def sigmoid(arrayOfN):
+    i = 0
     for n in arrayOfN:
-        arrayOfN[0] = 1 / (1 + math.exp(-n))
+        arrayOfN[i] = (1 / (1 + np.exp(-n)))
+        i = i + 1
     return arrayOfN
 
 def get_exact_w(X, trans_X, Y):
@@ -55,10 +71,6 @@ def get_aproximative_w():
         # picking random line in the matrix
         random_line = random.randrange(0, (len(Y) - 1))
         W = W + (alpha * (Y[random_line] - W.dot(X[random_line])) * X[random_line])
-        # displaying every 10 iterations
-        # if i % 10 == 0:
-        #     print(random_line)
-        #     print("W" + str(i) + ": " + str(W))
     return W
 
 def get_aproximative_w_rosenblatt():
@@ -70,9 +82,6 @@ def get_aproximative_w_rosenblatt():
     # looping
     for i in range(0, 1001):
         W = W - alpha * (((-2 / len(Y)) * trans_X.dot(Y - g(X, W))))
-        # displaying every 10 iterations
-        if i % 100 == 0:
-            print("W" + str(i) + ": " + str(W))
     return W
 
 def get_aproximative_w_sigmoid():
@@ -80,18 +89,13 @@ def get_aproximative_w_sigmoid():
     global X, Y
     print(X.shape)
     trans_X = transpose_matrix(X)
-    W = np.matrix('0.25676164; 0.83605127')
-    alpha = 0.00001
+    W = np.matrix('0.1 0.2 0.3 0.4')
+    alpha = 0.0000000001
     # looping
-    for i in range(0, 1001):
-        W = W - alpha * (((1 / len(Y)) * trans_X.dot(sigmoid(g(X, W)) - Y)))
-        print("aaa")
-        print(sum(abs(np.round(sigmoid(g(X,W)))-Y)))
-        # displaying every 10 iterations
-        #if i % 100 == 0:
-            #print("*****sigmoid = " + str(sigmoid(g(X, W))))
-            #print("W" + str(i) + ": " + str(W))
-    print("ICI !!!")
+    for i in range(0, 2001):
+        W = W - alpha * (((1 / len(Y)) * trans_X.dot(sigmoid(g(X, transpose_matrix(W))) - Y)))
+        #print(sum(abs(np.round(sigmoid(g(X,W)))-Y)))
+    print("margin error & Y2")
     print(sigmoid(g(X[2], W)))
     print(Y[2])
     return W
@@ -111,18 +115,21 @@ def classification():
 
 def main():
     print("début du programme")
+
     # Fetching mat X and Y
     global X, Y
     # csv_to_matrix("frut_price.csv")
     initMatrix()
-    #print(X)
-    #print(Y)
+
     # Transposing X
     trans_X = transpose_matrix(X)
-    # Getting app W
 
     approximative_W_sigmoid = get_aproximative_w_sigmoid()
     print("Approximative W (Sigmoid) = " + str(approximative_W_sigmoid))
+
+
+    #Old calling
+
     # approximative_W_rosenblatt = get_aproximative_w_rosenblatt()
     # print("Approximative W (Rosenblatt) = " + str(approximative_W_rosenblatt))
     # Getting app W
