@@ -19,6 +19,17 @@ def csv_to_matrix(filename):
     X = csv_data[:,1:]
     col1 = np.full((len(Y), 1), 1)
     X = np.append(X, col1, axis=1)
+	
+	#extension feature engeering
+    x = np.arange(1, 301).reshape(300, 1)
+    x2 = x ** 2
+    x3 = x * x2
+    x4 = x2 + x3
+    x = np.append(x,x2, axis=1)
+    x = np.append(x,x3, axis=1)
+    X = np.append(x, x4, axis=1)
+    Y = (-2 * X + 600 + x3 * x4)
+    print(Y)
 
 def transpose_matrix(mat):
     trans_mat = np.transpose(mat)
